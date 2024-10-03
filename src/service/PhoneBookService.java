@@ -11,8 +11,8 @@ public interface PhoneBookService {
     public void addEntry(PhoneBookEntity entry) throws IOException;
     public void loadContactsFile() throws IOException;
 
-    public List<PhoneBookEntity> search(String lastName
-//                                        String city, String phoneNumber
-    ) throws IOException;
-    public void displayAll();
+    public List<PhoneBookEntity> search(String query) throws IOException;
+    public void editContact(String phoneNumber, PhoneBookEntity newEntry) throws IOException;
+    public boolean deleteContact(String query) throws IOException;
+
 }

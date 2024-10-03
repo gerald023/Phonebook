@@ -4,6 +4,9 @@ import model.PhoneBookEntity;
 import service.PhoneBookService;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,8 +30,9 @@ public class PhoneBookServiceImpl implements PhoneBookService {
 
     @Override
     public void addEntry(PhoneBookEntity entry) throws IOException {
-        if (entries.stream().noneMatch(e -> e.getPhoneNumber().equals(entry.getPhoneNumber()))) {
+        if (entries.stream().noneMatch(e -> e.getPhoneNumber().equals(entry.getPhoneNumber())) ) {
             entries.add(entry);
+            saveToFile();
         } else {
             System.out.println("Phone number already exists!");
         }
@@ -40,68 +44,106 @@ public class PhoneBookServiceImpl implements PhoneBookService {
         String line;
         while ((line = br.readLine()) != null) {
             String[] data = line.split(",");
-//            if (data.length == 5) {
-//                entries.add(new PhoneBookEntity(data[0], data[1], data[2], data[3], data[4]));
-//            }
-            System.out.println("{" + '\n' +
-                    '\t' + "First name: " + data[0] +
-                    '\n' + '\t' + "Last name: " + data[1] + '\n' +
-                    '\t' + "Address: " + data[2] + ' ' + data[3] +
-                    '\n' + '\t' +  "Phone number: " + data[4] + '\n' + "}"
-            );
+            if (data.length == 5) {
+                entries.add(new PhoneBookEntity(data[0], data[1], data[2], data[3], data[4]));
+            }
+            PhoneBookEntity entity = new PhoneBookEntity(data[0], data[1], data[2], data[3], data[4]);
+
+            System.out.println(entity);
         }
         br.close();
     }
 
     @Override
     public List<PhoneBookEntity> search(String query) throws IOException {
-//        List<PhoneBookEntity> results = new ArrayList<>();
-//        for (PhoneBookEntity entry : entries) {
-//            if (entry.getLastname().equalsIgnoreCase(query) ||
-//                    entry.getCity().equalsIgnoreCase(query) ||
-//                    entry.getPhoneNumber().equals(query)) {
-//                return (List<PhoneBookEntity>) entry;
-//            }
-//        }
-        BufferedReader br = new BufferedReader(new FileReader(FILE_PATH));
-        String line;
-        while ((line = br.readLine()) != null) {
-            String[] data = line.split(",");
-            for (String item : data) {
-                if (Objects.equals(item, query)) {
-                    System.out.println(line);
-                }
+        List<PhoneBookEntity> results = new ArrayList<>();
+        for (PhoneBookEntity entry : entries) {
+            if (entry.getLastname().equalsIgnoreCase(query) ||
+                    entry.getFirstname().equalsIgnoreCase(query) ||
+                    entry.getCity().equalsIgnoreCase(query) ||
+                    entry.getPhoneNumber().equals(query)) {
+                results.add(entry);
+                ;
             }
         }
-
-        return null;
+//        BufferedReader br = new BufferedReader(new FileReader(FILE_PATH));
+//        String line;
+//        int noLine = 0;
+//        while ((line = br.readLine()) != null) {
+//            String[] data = line.split(",");
+//            noLine++;
+//            for (String item : data) {
+//                if (item.toLowerCase().trim().contains(query.toLowerCase().trim())) {
+//                    System.out.println("Contacts found: "+ noLine);
+//                    PhoneBookEntity entity = new PhoneBookEntity(
+//                            data[0], data[1], data[2], data[3], data[4]
+//                    );
+//                    System.out.println(entity);
+//                }
+////                else if (!item.toLowerCase().equals(query.toLowerCase())) {
+////                    System.out.println("No contacts found");
+////                    break;
+////                }
+////                break;
+//            }
+//        }
+//        return null;
+//        System.out.println("Contacts found: " + results.size());
+//        System.out.println(results);
+        return results;
     }
 
-    @Override
-    public void displayAll() {
-        for (PhoneBookEntity entry : entries) {
-            System.out.println(entry);
-        }
+    public List<PhoneBookEntity> displayAll() {
+        //            System.out.println(entry);
+        return new ArrayList<>(entries);
     }
 
     // Count records
-    public int countEntries() {
-        return entries.size();
+    public String countEntries() {
+        return "You have " + entries.size() + " contacts saved.";
     }
 
     // Modify an entry by phone number
-    public void editContact(String phoneNumber, PhoneBookEntity newEntry) {
+    @Override
+    public void editContact(String phoneNumber, PhoneBookEntity newEntry) throws IOException {
         for (int i = 0; i < entries.size(); i++) {
             if (entries.get(i).getPhoneNumber().equals(phoneNumber)) {
                 entries.set(i, newEntry);
-                break;
+                saveToFile();
+                return;
             }
         }
     }
 
     // Delete an entry by phone number
-    public void deleteEntry(String phoneNumber) {
-        entries.removeIf(entry -> entry.getPhoneNumber().equals(phoneNumber));
+    public boolean deleteContact(String query) throws IOException {
+//        BufferedReader br = new BufferedReader(new FileReader(FILE_PATH));
+//        String line;
+//        List<String> updatedLines = new ArrayList<>();
+//        while ((line = br.readLine()) != null) {
+//            String[] data = line.split(",");
+//
+//            for (String item : data) {
+//                if (!item.toLowerCase().trim().contains(query.toLowerCase().trim())) {
+//                    updatedLines.add(line);
+//                    break;
+//                }
+//                break;
+//            }
+////            break;
+//        }
+//        System.out.println(entries);
+//        Files.write(Paths.get(FILE_PATH), updatedLines);
+//        System.out.println("Contact deleted successfully!");
+//        br.close();
+
+       boolean result = entries.removeIf(entry ->
+                entry.getPhoneNumber().equals(query)||
+                entry.getLastname().equalsIgnoreCase(query)
+                || entry.getFirstname().equalsIgnoreCase(query)
+        );
+        saveToFile();
+        return result;
     }
 
 

@@ -57,13 +57,11 @@ public class PhoneBookEntity {
 
     @Override
     public String toString() {
-        return "PhoneBookEntity{" +
-                "firstname='" + firstname + '\'' +
-                ", lastname='" + lastname + '\'' +
-                ", address='" + address + '\'' +
-                ", city='" + city + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                '}';
+        return "{" + '\n' +
+                            '\t' + "First name: " + firstname + '\n' +
+                            '\t' + "Last name: " + lastname + '\n' +
+                            '\t' + "Address: " + city + ' ' + address + '\n' +
+                            '\t' + "Phone number: " + phoneNumber + '\n' + "}";
     }
 }
 
