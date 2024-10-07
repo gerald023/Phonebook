@@ -37,15 +37,15 @@ public class PhoneBookUI {
 
     private void addContact() throws IOException {
         System.out.println("First name: ");
-        String firstname = sc.next();
+        String firstname = sc.nextLine();
         System.out.println("Last name: ");
-        String lastname = sc.next();
+        String lastname = sc.nextLine();
         System.out.println("Address: ");
-        String address = sc.next();
+        String address = sc.nextLine();
         System.out.println("City: ");
-        String city = sc.next();
+        String city = sc.nextLine();
         System.out.println(" Phone number: ");
-        String phoneNumber = sc.next();
+        String phoneNumber = sc.nextLine();
         System.out.println("Adding new entry...");
 
         phoneBook.addEntry(new PhoneBookEntity(firstname, lastname, address, city, phoneNumber));
