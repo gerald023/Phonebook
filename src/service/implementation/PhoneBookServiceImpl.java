@@ -4,18 +4,13 @@ import model.PhoneBookEntity;
 import service.PhoneBookService;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
+
 
 public class PhoneBookServiceImpl implements PhoneBookService {
     private final List<PhoneBookEntity> entries = new ArrayList<>();
-    private static final String FILE_PATH = "C:/Users/GERALD/Desktop/Phone_Book/" +
-            "src/database/phonebook.txt";
+    private static final String FILE_PATH = "src/database/phonebook.txt";
 
     @Override
     public void saveToFile() throws IOException {
@@ -32,6 +27,8 @@ public class PhoneBookServiceImpl implements PhoneBookService {
     public void addEntry(PhoneBookEntity entry) throws IOException {
         if (entries.stream().noneMatch(e -> e.getPhoneNumber().equals(entry.getPhoneNumber())) ) {
             entries.add(entry);
+
+//            this saves the entry to the file.
             saveToFile();
         } else {
             System.out.println("Phone number already exists!");
@@ -39,7 +36,7 @@ public class PhoneBookServiceImpl implements PhoneBookService {
     }
 
     @Override
-    public void loadContactsFile() throws IOException {
+    public void loadContactsFromFile() throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(FILE_PATH));
         String line;
         while ((line = br.readLine()) != null) {
@@ -47,9 +44,6 @@ public class PhoneBookServiceImpl implements PhoneBookService {
             if (data.length == 5) {
                 entries.add(new PhoneBookEntity(data[0], data[1], data[2], data[3], data[4]));
             }
-            PhoneBookEntity entity = new PhoneBookEntity(data[0], data[1], data[2], data[3], data[4]);
-
-            System.out.println(entity);
         }
         br.close();
     }
@@ -63,7 +57,7 @@ public class PhoneBookServiceImpl implements PhoneBookService {
                     entry.getCity().equalsIgnoreCase(query) ||
                     entry.getPhoneNumber().equals(query)) {
                 results.add(entry);
-                ;
+
             }
         }
 //        BufferedReader br = new BufferedReader(new FileReader(FILE_PATH));

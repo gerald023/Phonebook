@@ -4,7 +4,6 @@ import model.PhoneBookEntity;
 import service.implementation.PhoneBookServiceImpl;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -14,7 +13,7 @@ public class PhoneBookUI {
 
     // Main menu for user interaction
     public void menu() throws IOException {
-        phoneBook.loadContactsFile();
+        phoneBook.loadContactsFromFile();
         boolean exit = false;
         while (!exit) {
             System.out.println("Phone Book Menu:\n1. Add Contact\n2. Search\n3. Edit Contact \n4. Delete Contact\n5. Display All Contact\n6. Count\n7. Exit");
