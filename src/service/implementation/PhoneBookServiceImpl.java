@@ -14,13 +14,17 @@ public class PhoneBookServiceImpl implements PhoneBookService {
 
     @Override
     public void saveToFile() throws IOException {
-        BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH));
-        for (PhoneBookEntity entry : entries) {
-            bw.write(entry.getFirstname() + "," + entry.getLastname() + ","
-                    + entry.getAddress() + "," + entry.getCity() + "," + entry.getPhoneNumber());
-            bw.newLine();
+        InputStream inputStream = getClass().getResourceAsStream(FILE_PATH);
+        if (inputStream != null) {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH));
+            for (PhoneBookEntity entry : entries) {
+                bw.write(entry.getFirstname() + "," + entry.getLastname() + ","
+                        + entry.getAddress() + "," + entry.getCity() + "," + entry.getPhoneNumber());
+                bw.newLine();
+            }
+            bw.close();
         }
-        bw.close();
+
     }
 
     @Override
