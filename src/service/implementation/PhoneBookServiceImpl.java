@@ -14,13 +14,17 @@ public class PhoneBookServiceImpl implements PhoneBookService {
 
     @Override
     public void saveToFile() throws IOException {
-        BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH));
-        for (PhoneBookEntity entry : entries) {
-            bw.write(entry.getFirstname() + "," + entry.getLastname() + ","
-                    + entry.getAddress() + "," + entry.getCity() + "," + entry.getPhoneNumber());
-            bw.newLine();
+        InputStream inputStream = getClass().getResourceAsStream(FILE_PATH);
+        if (inputStream != null) {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH));
+            for (PhoneBookEntity entry : entries) {
+                bw.write(entry.getFirstname() + "," + entry.getLastname() + ","
+                        + entry.getAddress() + "," + entry.getCity() + "," + entry.getPhoneNumber());
+                bw.newLine();
+            }
+            bw.close();
         }
-        bw.close();
+
     }
 
     @Override
@@ -111,30 +115,10 @@ public class PhoneBookServiceImpl implements PhoneBookService {
 
     // Delete an entry by phone number
     public boolean deleteContact(String query) throws IOException {
-//        BufferedReader br = new BufferedReader(new FileReader(FILE_PATH));
-//        String line;
-//        List<String> updatedLines = new ArrayList<>();
-//        while ((line = br.readLine()) != null) {
-//            String[] data = line.split(",");
-//
-//            for (String item : data) {
-//                if (!item.toLowerCase().trim().contains(query.toLowerCase().trim())) {
-//                    updatedLines.add(line);
-//                    break;
-//                }
-//                break;
-//            }
-////            break;
-//        }
-//        System.out.println(entries);
-//        Files.write(Paths.get(FILE_PATH), updatedLines);
-//        System.out.println("Contact deleted successfully!");
-//        br.close();
+
 
        boolean result = entries.removeIf(entry ->
-                entry.getPhoneNumber().equals(query)||
-                entry.getLastname().equalsIgnoreCase(query)
-                || entry.getFirstname().equalsIgnoreCase(query)
+                entry.getPhoneNumber().equals(query)
         );
         saveToFile();
         return result;
