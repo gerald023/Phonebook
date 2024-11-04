@@ -120,7 +120,7 @@ public class PhoneBookUI {
 
 
     private void deleteContact() throws IOException {
-        System.out.println("Delete contact by name or phone number: ");
+        System.out.println("Delete contact by phone number: ");
         // Implement delete logic here
         String phoneNumber = sc.nextLine();
         Boolean result = phoneBook.deleteContact(phoneNumber);
